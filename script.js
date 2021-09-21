@@ -14,36 +14,22 @@ function divide(a, b) {
     return a / b;
 }
 
-function operate(operator, num1, num2) {
-    console.log(operator);
-}
+function operate(operator, num1, num2) {}
 
-const operators = document.querySelectorAll(".top, .operator");
+const buttons = document.querySelectorAll(".button, .top");
 
 const equation = document.querySelector("#equation");
+let equationLength = equation.clientWidth;
 
-operators.forEach((operator) =>
-    operator.addEventListener("click", () => {
-        operate(operator.id);
-        {
-            if (
-                operator.className === "operator" ||
-                operator.className === "number"
-            ) {
-                equation.textContent += " " + operator.textContent;
-
-                //TODO create function to take all content
-            } else if (operator.id === "clear") {
-                equation.textContent = "";
-            }
-        }
+buttons.forEach((button) =>
+    button.addEventListener("click", () => {
+        console.log(equation.textContent, button.textContent);
+        if (button.className === "button operator") {
+            equation.textContent += " " + button.textContent + " ";
+        } else if (button.id === "clear") {
+            equation.textContent = "";
+        } else if (button.className === "button number") {
+            equation.textContent += button.textContent;
+        } 
     })
 );
-
-const numbers = document.querySelectorAll(".number");
-
-numbers.forEach((number) => {
-    number.addEventListener("click", () => {
-        equation.textContent += number.textContent;
-    });
-});
