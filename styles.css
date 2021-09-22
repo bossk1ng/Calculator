@@ -49,7 +49,6 @@ nav {
 
 #value {
     position: absolute;
-    border: 1px black solid;
     height: 30%;
     width: 90%;
     margin-left: auto;
@@ -65,7 +64,6 @@ nav {
 
 #equation {
     position: absolute;
-    border: 1px black solid;
     height: 45%;
     width: 90%;
     margin-left: auto;

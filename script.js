@@ -14,28 +14,36 @@ function divide(a, b) {
     return a / b;
 }
 
+function updateValue() {
+    nums.shift();
+    nums.shift();
+    operators.shift();
+    if (nums.length > 0) {
+        nums.unshift(valueText);
+    }
+}
 
 const value = document.getElementById("value");
 
 function operate(operators, nums) {
-    let valueText = 0;
+    let ol = operators.length;
 
-    console.log(nums.reduce((a, b) => add(a, b)))
-
-    operators.forEach((operator) => {
-        if (operator === "+") {
-            valueText = nums.reduce((a, b) => add(a, b))
-        } else if (operator === "-") {
-            valueText = nums.reduce((a, b) => subtract(a, b))
-        } else if (operator === "×") {
-            valueText = nums.reduce((a, b) => multiply(a, b))
+    for (let i = 0; i < ol; i++) {
+        if (operators[0] === "+") {
+            valueText = add(nums[0], nums[1]);
+            updateValue();
+        } else if (operators[0] === "-") {
+            valueText = subtract(nums[0], nums[1]);
+            updateValue();
+        } else if (operators[0] === "×") {
+            valueText = multiply(nums[i], nums[1]);
+            updateValue();
         } else {
-            valueText = nums.reduce((a, b) => divide(a, b))
+            valueText = divide(nums[0], nums[1]);
+            updateValue();
         }
-    });
-    value.textContent = Math.round(valueText * 100) / 100;
-    nums.shift()
-    nums.shift()
+    }
+    equation.textContent = Math.round(valueText * 100) / 100;
 }
 const buttons = document.querySelectorAll(".button, .top");
 
@@ -48,12 +56,18 @@ let nums = [];
 buttons.forEach((button) =>
     button.addEventListener("click", () => {
         if (button.className === "button operator") {
-            nums.push(
-                parseFloat(equation.textContent.split(" ").slice(-1).join(", "))
-            );
+            if (equation.textContent === "") {
+                nums.push(parseFloat(value.textContent));
+            } else {
+                nums.push(
+                    parseFloat(
+                        equation.textContent.split(" ").slice(-1).join(", ")
+                    )
+                );
+            }
             if (button.id === "equal") {
+                value.textContent = equation.textContent;
                 operate(operators, nums);
-                equation.textContent = value.textContent;
                 return;
             }
             operators.push(button.textContent);
@@ -61,10 +75,17 @@ buttons.forEach((button) =>
         } else if (button.id === "clear") {
             operators = [];
             nums = [];
-            valueText = ""
-            value.textContent = ""
+
+            valueText = "";
+            value.textContent = "";
             equation.textContent = "";
         } else if (button.className === "button number") {
+            if (
+                button.id === "decimal" &&
+                equation.textContent.split(" ").slice(-1).join(", ").includes(".")
+            ) {
+                return;
+            }
             equation.textContent += button.textContent;
         }
     })
