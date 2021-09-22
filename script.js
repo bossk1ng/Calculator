@@ -36,7 +36,7 @@ function operate(operators, nums) {
             valueText = subtract(nums[0], nums[1]);
             updateValue();
         } else if (operators[0] === "×") {
-            valueText = multiply(nums[i], nums[1]);
+            valueText = multiply(nums[0], nums[1]);
             updateValue();
         } else {
             valueText = divide(nums[0], nums[1]);
@@ -82,7 +82,11 @@ buttons.forEach((button) =>
         } else if (button.className === "button number") {
             if (
                 button.id === "decimal" &&
-                equation.textContent.split(" ").slice(-1).join(", ").includes(".")
+                equation.textContent
+                    .split(" ")
+                    .slice(-1)
+                    .join(", ")
+                    .includes(".")
             ) {
                 return;
             }
